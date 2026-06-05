@@ -32,19 +32,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .brand-logo--large {
-  width: 84px;
-  height: 84px;
-  border-radius: 18px;
-  padding: 0.6rem;
-  box-shadow: 0 10px 30px rgba(0, 184, 217, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  width: 126px;
+  height: 126px;
+  border-radius: 20px;
+  padding: 0.75rem;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 184, 217, 0.25), rgba(0, 184, 217, 0.08));
+  box-shadow: 0 0 40px rgba(0, 184, 217, 0.4), 0 15px 40px rgba(0, 184, 217, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   transform: translateZ(0);
   will-change: transform, box-shadow;
 }
 
 @keyframes logo-pulse {
-  0% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 184, 217, 0.08); }
-  50% { transform: scale(1.04); box-shadow: 0 18px 48px rgba(0, 184, 217, 0.14); }
-  100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 184, 217, 0.08); }
+  0% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 184, 217, 0.4), 0 15px 40px rgba(0, 184, 217, 0.15); }
+  50% { transform: scale(1.06); box-shadow: 0 0 60px rgba(0, 184, 217, 0.5), 0 20px 50px rgba(0, 184, 217, 0.25); }
+  100% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 184, 217, 0.4), 0 15px 40px rgba(0, 184, 217, 0.15); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -75,8 +76,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  min-height: 92px;
+  gap: 1.5rem;
+  min-height: 128px;
   padding: 0 40px;
   background: linear-gradient(135deg, #003B46 0%, #001F24 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -86,7 +87,8 @@ h1, h2, h3, h4, h5, h6 {
 .brand {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
+  flex-shrink: 0;
 }
 
 .logo-wrap {
@@ -97,8 +99,9 @@ h1, h2, h3, h4, h5, h6 {
 .brand-name {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .brand-subtitle {
@@ -142,6 +145,7 @@ h1, h2, h3, h4, h5, h6 {
   color: rgba(255, 255, 255, 0.75);
   font-family: 'Inter', sans-serif;
   font-weight: 500;
+  font-size: 15px;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -790,7 +794,16 @@ textarea:focus {
 @media (max-width: 768px) {
   .site-header {
     flex-wrap: wrap;
-    padding: 1rem 1.25rem;
+    padding: 1.25rem;
+    min-height: 110px;
+    gap: 1rem;
+  }
+
+  .brand-logo--large {
+    width: 96px;
+    height: 96px;
+    border-radius: 18px;
+    padding: 0.6rem;
   }
 
   .nav-toggle {
@@ -844,8 +857,24 @@ textarea:focus {
   }
 
   .site-header {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 1rem;
+    min-height: 100px;
+  }
+
+  .brand-logo--large {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    padding: 0.5rem;
+    box-shadow: 0 0 30px rgba(0, 184, 217, 0.35), 0 10px 30px rgba(0, 184, 217, 0.12);
+  }
+
+  .brand-name {
+    font-size: 1.1rem;
+  }
+
+  .nav-list a {
+    font-size: 14px;
   }
 
   .button {
