@@ -206,7 +206,11 @@
               <li><strong>Email</strong> <a href="mailto:support@smwebai.com">support@smwebai.com</a></li>
             </ul>
           </div>
-          <form class="contact-form">
+          <form class="contact-form" action="https://formsubmit.co/support@smwebai.com" method="POST" target="_blank">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="New inquiry from smwebai.com">
+            <input type="hidden" name="_next" value="https://smwebai.com/?thank-you=1">
+
             <label for="name">Name</label>
             <input type="text" id="name" name="name" placeholder="Your name" required>
 
