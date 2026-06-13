@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Noor-e-Elahi — A lightweight, prayer-focused app for accurate Athan times, alarms, and community connection.">
+  <title>Noor-e-Elahi — Local Athan App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #03131a 0%, #0a1f28 100%);
+      color: #f4f7fb;
+    }
+    .product-hero {
+      padding: 4rem 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #003B46 0%, #001F24 100%);
+      border-bottom: 1px solid rgba(242, 216, 122, 0.08);
+    }
+    .product-hero h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin: 0 0 0.5rem 0;
+      color: #f2d87a;
+    }
+    .product-hero .tagline {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 600px;
+      margin: 0 auto 1rem;
+      line-height: 1.6;
+    }
+    .product-hero .download-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      background: linear-gradient(135deg, #4d9fff, #00b8d9);
+      color: #061924;
+      border: none;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 12px 30px rgba(0, 184, 217, 0.25);
+    }
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(0, 184, 217, 0.35);
+    }
+    .content-wrapper {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* ── Floating Preview Section ── */
+    .floating-preview {
+      padding: 4rem 0 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .floating-preview::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(30, 90, 200, 0.12), transparent 70%);
+      pointer-events: none;
+    }
+    .floating-preview h2 {
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      color: #f2d87a;
+      margin: 0 0 3rem 0;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 1;
+    }
+    .preview-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      position: relative;
+      z-index: 1;
+      perspective: 1200px;
+    }
+    .preview-card {
+      width: 260px;
+      background: rgba(6, 18, 38, 0.96);
+      border: 1px solid rgba(77, 159, 255, 0.18);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55), 0 0 40px rgba(20, 80, 200, 0.08);
+      flex-shrink: 0;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .preview-card:hover {
+      box-shadow: 0 28px 72px rgba(0, 0, 0, 0.65), 0 0 60px rgba(0, 184, 217, 0.12);
+    }
+    .preview-card.card-left {
+      transform: rotateY(12deg) translateX(16px) scale(0.92);
+      opacity: 0.88;
+      z-index: 1;
+    }
+    .preview-card.card-center {
+      transform: translateY(-12px);
+      z-index: 3;
+      width: 280px;
+    }
+    .preview-card.card-right {
+      transform: rotateY(-12deg) translateX(-16px) scale(0.92);
+      opacity: 0.88;
+      z-index: 1;
+    }
+    .pc-header {
+      padding: 0.65rem 0.9rem;
+      background: rgba(10, 30, 60, 0.9);
+      border-bottom: 1px solid rgba(77, 159, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pc-header-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #cde4ff;
+      letter-spacing: 0.02em;
+    }
+    .pc-header-icon {
+      font-size: 1rem;
+      opacity: 0.75;
+    }
+    .pc-body {
+      padding: 1rem;
+    }
+
+    /* Prayer Times card */
+    .prayer-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .prayer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+    .prayer-row.active {
+      background: rgba(0, 184, 217, 0.12);
+      border: 1px solid rgba(0, 184, 217, 0.25);
+    }
+    .prayer-row:not(.active) {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+    }
+    .prayer-name {
+      font-weight: 500;
+      color: #cde4ff;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .prayer-name .dot-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      flex-shrink: 0;
+    }
+    .prayer-row.active .dot-indicator {
+      background: #00b8d9;
+      box-shadow: 0 0 6px rgba(0, 184, 217, 0.7);
+    }
+    .prayer-time {
+      color: rgba(255,255,255,0.6);
+      font-variant-numeric: tabular-nums;
+    }
+    .prayer-row.active .prayer-time {
+      color: #00b8d9;
+      font-weight: 600;
+    }
+    .location-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Reminders card */
+    .next-prayer-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 0.25rem;
+    }
+    .next-prayer-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #f2d87a;
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+    .next-prayer-time {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1rem;
+    }
+    .countdown-bar-wrap {
+      margin-bottom: 1.1rem;
+    }
+    .countdown-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 0.35rem;
+    }
+    .countdown-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .countdown-fill {
+      height: 100%;
+      width: 62%;
+      background: linear-gradient(90deg, #4d9fff, #00b8d9);
+      border-radius: 99px;
+    }
+    .notif-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .notif-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+    }
+    .notif-label {
+      color: rgba(255,255,255,0.7);
+    }
+    .toggle {
+      width: 32px;
+      height: 16px;
+      border-radius: 99px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .toggle.on {
+      background: rgba(0, 184, 217, 0.8);
+    }
+    .toggle.off {
+      background: rgba(255,255,255,0.12);
+    }
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      transition: left 0.2s;
+    }
+    .toggle.on::after { left: 18px; }
+    .toggle.off::after { left: 2px; }
+
+    /* Mosque Finder card */
+    .mosque-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 0.85rem;
+    }
+    .mosque-row {
+      padding: 0.55rem 0.6rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .mosque-name {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #cde4ff;
+      margin-bottom: 0.15rem;
+    }
+    .mosque-dist {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.45);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .qibla-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.75rem;
+      background: rgba(0, 184, 217, 0.1);
+      border: 1px solid rgba(0, 184, 217, 0.2);
+      border-radius: 10px;
+      font-size: 0.78rem;
+    }
+    .qibla-label {
+      color: rgba(255,255,255,0.6);
+    }
+    .qibla-value {
+      color: #00b8d9;
+      font-weight: 600;
+    }
+
+    /* ── Feature Cards ── */
+    .features-section {
+      padding: 3rem 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .feature-card {
+      background: linear-gradient(180deg, rgba(5, 18, 45, 0.6), rgba(4, 12, 30, 0.7));
+      border: 1px solid rgba(77, 159, 255, 0.12);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 100, 200, 0.08);
+    }
+    .feature-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+    }
+    .feature-card h3 {
+      margin: 0 0 0.5rem 0;
+      color: #f2d87a;
+      font-size: 1.1rem;
+    }
+    .feature-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 3rem 0;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(5, 18, 45, 0.2), transparent);
+      border-top: 1px solid rgba(242, 216, 122, 0.1);
+    }
+    .cta-section h2 {
+      font-size: 2rem;
+      color: #f2d87a;
+      margin: 0 0 1rem 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .cta-section p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 0 0 1.5rem 0;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      color: #00b8d9;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover {
+      color: #4d9fff;
+    }
+
+    @media (max-width: 768px) {
+      .preview-stage {
+        flex-direction: column;
+        align-items: center;
+        perspective: none;
+      }
+      .preview-card.card-left,
+      .preview-card.card-right {
+        transform: none;
+        opacity: 1;
+        width: 260px;
+      }
+      .preview-card.card-center {
+        transform: none;
+        width: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="product-hero">
+    <div class="content-wrapper">
+      <h1>Noor-e-Elahi</h1>
+      <p class="tagline">Stay connected to your prayers, anytime, anywhere. Accurate Athan times, smart reminders, and local mosque discovery — all in one simple app.</p>
+      <div class="download-buttons">
+        <a href="#" class="download-btn">📱 Download on iOS</a>
+        <a href="#" class="download-btn">🤖 Download on Android</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+
+    <!-- Floating App Preview -->
+    <section class="floating-preview">
+      <h2>What Makes Noor-e-Elahi Special</h2>
+      <div class="preview-stage">
+
+        <!-- Card 1: Prayer Times -->
+        <div class="preview-card card-left">
+          <div class="pc-header">
+            <span class="pc-header-title">Prayer Times</span>
+            <span class="pc-header-icon">🌙</span>
+          </div>
+          <div class="pc-body">
+            <div class="location-bar">
+              <span>📍</span>
+              <span>Your Location &nbsp;·&nbsp; 2:34 PM</span>
+            </div>
+            <ul class="prayer-list">
+              <li class="prayer-row">
+                <span class="prayer-name"><span class="dot-indicator"></span>Fajr</span>
+                <span class="prayer-time">4:12 AM</span>
+              </li>
+              <li class="prayer-row">
+                <span class="prayer-name"><span class="dot-indicator"></span>Dhuhr</span>
+                <span class="prayer-time">12:08 PM</span>
+              </li>
+              <li class="prayer-row active">
+                <span class="prayer-name"><span class="dot-indicator"></span>Asr</span>
+                <span class="prayer-time">3:41 PM</span>
+              </li>
+              <li class="prayer-row">
+                <span class="prayer-name"><span class="dot-indicator"></span>Maghrib</span>
+                <span class="prayer-time">6:29 PM</span>
+              </li>
+              <li class="prayer-row">
+                <span class="prayer-name"><span class="dot-indicator"></span>Isha</span>
+                <span class="prayer-time">7:54 PM</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Card 2: Smart Reminders (center) -->
+        <div class="preview-card card-center">
+          <div class="pc-header">
+            <span class="pc-header-title">Smart Reminders</span>
+            <span class="pc-header-icon">🔔</span>
+          </div>
+          <div class="pc-body">
+            <p class="next-prayer-label">Next Prayer</p>
+            <p class="next-prayer-name">Asr</p>
+            <p class="next-prayer-time">3:41 PM</p>
+            <div class="countdown-bar-wrap">
+              <div class="countdown-label">
+                <span>Time remaining</span>
+                <span>1h 07m</span>
+              </div>
+              <div class="countdown-bar">
+                <div class="countdown-fill"></div>
+              </div>
+            </div>
+            <div class="notif-list">
+              <div class="notif-row">
+                <span class="notif-label">Athan Sound</span>
+                <div class="toggle on"></div>
+              </div>
+              <div class="notif-row">
+                <span class="notif-label">Vibration</span>
+                <div class="toggle on"></div>
+              </div>
+              <div class="notif-row">
+                <span class="notif-label">15 min before</span>
+                <div class="toggle off"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Mosque Finder -->
+        <div class="preview-card card-right">
+          <div class="pc-header">
+            <span class="pc-header-title">Mosque Finder</span>
+            <span class="pc-header-icon">🕌</span>
+          </div>
+          <div class="pc-body">
+            <div class="mosque-list">
+              <div class="mosque-row">
+                <p class="mosque-name">Al-Noor Mosque</p>
+                <p class="mosque-dist"><span>📍</span> 0.3 km away</p>
+              </div>
+              <div class="mosque-row">
+                <p class="mosque-name">Masjid Al-Rahman</p>
+                <p class="mosque-dist"><span>📍</span> 0.8 km away</p>
+              </div>
+              <div class="mosque-row">
+                <p class="mosque-name">Central Mosque</p>
+                <p class="mosque-dist"><span>📍</span> 1.2 km away</p>
+              </div>
+            </div>
+            <div class="qibla-badge">
+              <span class="qibla-label">🧭 Qibla Direction</span>
+              <span class="qibla-value">163° SE</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="features-section">
+      <div class="feature-card">
+        <div class="icon">✨</div>
+        <h3>Privacy First</h3>
+        <p>Your data stays on your device. No tracking, no ads, just pure focus on your spiritual practice.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🌙</div>
+        <h3>Night Mode</h3>
+        <p>Easy on the eyes during evening prayers. Beautiful dark interface designed for comfort at any time of day.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🌍</div>
+        <h3>Global Support</h3>
+        <p>Works in 195+ countries with accurate calculations for any location worldwide.</p>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <h2>Download Noor-e-Elahi Today</h2>
+      <p>Join thousands of users keeping their prayers on track.</p>
+      <div class="download-buttons">
+        <a href="#" class="download-btn">📱 Download on iOS</a>
+        <a href="#" class="download-btn">🤖 Download on Android</a>
+      </div>
+      <a href="index.html" class="back-link">← Back to SM Web & AI Studio</a>
+    </section>
+  </div>
+</body>
+</html>

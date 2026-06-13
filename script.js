@@ -141,6 +141,77 @@ if (canvas && canvas.getContext) {
   logoWrap.addEventListener('mouseenter', () => { logo.style.transition = 'transform 160ms ease-out'; });
 })();
 
+// services carousel
+(function() {
+  const carousel = document.querySelector('.carousel-track');
+  const carouselSlides = document.querySelectorAll('.carousel-slide');
+  const prevButton = document.querySelector('.carousel-btn--prev');
+  const nextButton = document.querySelector('.carousel-btn--next');
+  const dotsContainer = document.querySelector('.carousel-dots');
+  let activeSlide = 0;
+  let carouselInterval = null;
+
+  function createCarouselDots() {
+    carouselSlides.forEach((_, index) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'carousel-dot';
+      if (index === 0) dot.classList.add('active');
+      dot.setAttribute('data-index', String(index));
+      dot.addEventListener('click', () => {
+        setActiveSlide(index);
+        resetCarouselTimer();
+      });
+      dotsContainer.append(dot);
+    });
+  }
+
+  function updateCarouselPosition() {
+    if (!carousel) return;
+    const offset = activeSlide * -100;
+    carousel.style.transform = `translateX(${offset}%)`;
+    carouselSlides.forEach((slide, index) => {
+      slide.classList.toggle('active', index === activeSlide);
+    });
+    document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+      dot.classList.toggle('active', index === activeSlide);
+    });
+  }
+
+  function setActiveSlide(index) {
+    activeSlide = (index + carouselSlides.length) % carouselSlides.length;
+    updateCarouselPosition();
+  }
+
+  function nextCarouselSlide() {
+    setActiveSlide(activeSlide + 1);
+  }
+
+  function prevCarouselSlide() {
+    setActiveSlide(activeSlide - 1);
+  }
+
+  function resetCarouselTimer() {
+    clearInterval(carouselInterval);
+    carouselInterval = window.setInterval(nextCarouselSlide, 6000);
+  }
+
+  if (carousel && carouselSlides.length && prevButton && nextButton && dotsContainer) {
+    createCarouselDots();
+    prevButton.addEventListener('click', () => {
+      prevCarouselSlide();
+      resetCarouselTimer();
+    });
+    nextButton.addEventListener('click', () => {
+      nextCarouselSlide();
+      resetCarouselTimer();
+    });
+    carousel.addEventListener('mouseenter', () => clearInterval(carouselInterval));
+    carousel.addEventListener('mouseleave', resetCarouselTimer);
+    resetCarouselTimer();
+  }
+})();
+
 // service card expand/collapse
 (function() {
   const cards = document.querySelectorAll('.service-card');
